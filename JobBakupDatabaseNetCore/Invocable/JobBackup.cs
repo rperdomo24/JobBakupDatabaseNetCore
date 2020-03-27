@@ -20,9 +20,18 @@ namespace JobBakupDatabaseNetCore.Invocable
 
         public void Send()
         {
-            GenerateScript generateScript = new GenerateScript(this.configuration);
-            generateScript.ScriptDatabase();
-
+            try
+            {
+                GenerateScript generateScript = new GenerateScript(this.configuration);
+                generateScript.ScriptDatabase();
+            }
+            catch (Exception ex)
+            {
+                //send excepcion to email
+                SendEmail sendEmail = new SendEmail(configuration);
+                sendEmail.Send(string.Format("Error to create, Excepcion description: {0}", ex.ToString()));
+                throw;
+            }
         }
     }
 }

@@ -18,7 +18,6 @@ namespace BakupDB
         /// parameters of your database
         /// </summary>
 
-
         private readonly IConfiguration configuration;
 
         public GenerateScript(IConfiguration configuration)
@@ -75,11 +74,11 @@ namespace BakupDB
                 writer.Flush();
                 stream.Position = 0;
                 //send stream in email
-                sendEmail.Send("Backup data generate succeful.", stream);
+                sendEmail.Send(string.Format("Backup data generate succeful. Name Database:{0}", _database), stream);
             }
             catch (Exception ex)
             {
-                sendEmail.Send(string.Format("Error to create backup data ex: ", ex));
+                throw;
             }
         }
     }
